@@ -24,6 +24,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     // contenedor de imagen
+    // modificando el main
     lateinit var diceImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
