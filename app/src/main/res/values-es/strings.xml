@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dice Roller</string>
-    <string name="roll">Lanzar</string>
-    <string name="tirar">Tirando</string>
+    <string name="app_name" translatable="false">Tirada de Dados</string>
+    <string name="roll" translatable="false">roll</string>
+    <string name="tirar" translatable="false">rolling</string>
     <string name="label_button">otro</string>
+    <string name="saludo">Hola tostada!</string>
 </resources>

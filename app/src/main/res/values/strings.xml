@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name" translatable="false">Dice Roller</string>
+    <string name="app_name">Dice Roller</string>
     <string name="roll" translatable="false">roll</string>
     <string name="tirar" translatable="false">rolling</string>
-    <string name="label_button">other</string>
+    <string name="label_button">another</string>
+    <string name="saludo">Hello toast!</string>
 </resources>

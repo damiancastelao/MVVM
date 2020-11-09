@@ -17,8 +17,10 @@
 package com.example.android.diceroller
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
@@ -27,14 +29,24 @@ class MainActivity : AppCompatActivity() {
     // modificando el main
     lateinit var diceImage: ImageView
 
+
+    val duration = Toast.LENGTH_LONG
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // cargamos layout
         setContentView(R.layout.activity_main)
 
+        val text = getString(R.string.saludo)
+        val toast = Toast.makeText(applicationContext, text, duration)
+
         val botonTirar: Button = findViewById(R.id.roll_button)
         botonTirar.setOnClickListener {
-            rollDice()
+            //rollDice()
+            MisCorutinas.salidaLog()
+            Log.d("mensajeCorutina", "desde la Activity")
         }
 
         diceImage = findViewById(R.id.dice_image)
