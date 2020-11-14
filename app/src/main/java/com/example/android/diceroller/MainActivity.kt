@@ -22,21 +22,20 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
+import java.util.Random
 
 // para no usar findViewById
 import kotlinx.android.synthetic.main.activity_main.*
 
+// para observar LiveDatas
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
     // contenedor de imagen
-    // modificando el main
     lateinit var diceImage: ImageView
 
-
     val duration = Toast.LENGTH_LONG
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +47,10 @@ class MainActivity : AppCompatActivity() {
         // nomenclatura que necesita utilizar jvm 1.8
         // se configure en project structure -> Modules -> Target Compatibillity
         val miModelo by viewModels<MyViewModel>()
+
+        miModelo.ronda.observe(this, Observer {
+            nuevaRonda -> textRonda.text = nuevaRonda.toString()
+        })
 
         val text = getString(R.string.saludo)
         val toast = Toast.makeText(applicationContext, text, duration)
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             // añado una ronda en el ViewModel
             miModelo.sumarRonda()
             // actualizao texto
-            textRonda.text = miModelo.ronda.value.toString()
+            // textRonda.text = miModelo.ronda.value.toString()
             Log.d("mensajeCorutina", "Actualizo ronda")
         }
 
