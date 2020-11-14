@@ -48,8 +48,17 @@ class MainActivity : AppCompatActivity() {
         // se configure en project structure -> Modules -> Target Compatibillity
         val miModelo by viewModels<MyViewModel>()
 
-        miModelo.ronda.observe(this, Observer {
-            nuevaRonda -> textRonda.text = nuevaRonda.toString()
+        // observamos cambios en ronda y actualizamos textView
+        miModelo.ronda.observe(
+            this,
+            Observer(fun(nuevaRonda: Int) {
+                textRonda.text = nuevaRonda.toString()
+            })
+        )
+
+        // observamos cambios en msjBoton y actualizamos texto del Button
+        miModelo.msjBoton.observe(this, Observer {
+            nuevoMsg -> comienzo.text = nuevoMsg
         })
 
         val text = getString(R.string.saludo)
@@ -60,11 +69,9 @@ class MainActivity : AppCompatActivity() {
             // cambia la imagen
             rollDice()
             // llama a las corutinas
-            MisCorutinas.salidaLog()
+            miModelo.salidaLog()
             // añado una ronda en el ViewModel
             miModelo.sumarRonda()
-            // actualizao texto
-            // textRonda.text = miModelo.ronda.value.toString()
             Log.d("mensajeCorutina", "Actualizo ronda")
         }
 
