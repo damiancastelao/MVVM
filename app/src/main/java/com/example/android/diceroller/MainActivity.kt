@@ -24,6 +24,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
+// para no usar findViewById
+import kotlinx.android.synthetic.main.activity_main.*
+
+import androidx.activity.viewModels
+
 class MainActivity : AppCompatActivity() {
     // contenedor de imagen
     // modificando el main
@@ -39,14 +44,25 @@ class MainActivity : AppCompatActivity() {
         // cargamos layout
         setContentView(R.layout.activity_main)
 
+        // Instanciamos el ViewModel
+        // nomenclatura que necesita utilizar jvm 1.8
+        // se configure en project structure -> Modules -> Target Compatibillity
+        val miModelo by viewModels<MyViewModel>()
+
         val text = getString(R.string.saludo)
         val toast = Toast.makeText(applicationContext, text, duration)
 
         val botonTirar: Button = findViewById(R.id.roll_button)
         botonTirar.setOnClickListener {
-            //rollDice()
+            // cambia la imagen
+            rollDice()
+            // llama a las corutinas
             MisCorutinas.salidaLog()
-            Log.d("mensajeCorutina", "desde la Activity")
+            // añado una ronda en el ViewModel
+            miModelo.sumarRonda()
+            // actualizao texto
+            textRonda.text = miModelo.ronda.value.toString()
+            Log.d("mensajeCorutina", "Actualizo ronda")
         }
 
         diceImage = findViewById(R.id.dice_image)
@@ -65,4 +81,5 @@ class MainActivity : AppCompatActivity() {
 
         diceImage.setImageResource(drawableResource)
     }
+
 }
