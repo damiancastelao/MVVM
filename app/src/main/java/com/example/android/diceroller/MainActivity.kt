@@ -32,6 +32,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
+    // para que sea mas facil la etiqueta del log
+    private val TAG_LOG: String? = "mensaje Main"
+
     // contenedor de imagen
     lateinit var diceImage: ImageView
 
@@ -51,8 +54,11 @@ class MainActivity : AppCompatActivity() {
         // observamos cambios en ronda y actualizamos textView
         miModelo.ronda.observe(
             this,
-            Observer(fun(nuevaRonda: Int) {
+            Observer(fun(nuevaRonda: MutableList<Int>) {
                 textRonda.text = nuevaRonda.toString()
+                // ejemplo de obtener el ultimo elemento
+                if (nuevaRonda.lastIndex > 0)
+                    Log.d(TAG_LOG, "Último elemento: " + nuevaRonda.get(nuevaRonda.lastIndex).toString())
             })
         )
 
