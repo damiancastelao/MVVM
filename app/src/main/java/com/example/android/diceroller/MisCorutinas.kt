@@ -18,7 +18,7 @@ object MisCorutinas {
     }
 
     private fun suspendFun(msg: String) {
-        Log.d("mensajeCorutina", msg)
+        Log.d("mensaje Corutina", msg)
     }
 
 

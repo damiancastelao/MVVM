@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">Dice Roller</string>
+    <string name="app_name">SimonDice</string>
     <string name="roll" translatable="false">roll</string>
     <string name="tirar" translatable="false">rolling</string>
-    <string name="label_button">another</string>
+    <string name="label_button">Otra Ronda!</string>
     <string name="saludo">Hello toast!</string>
+    <string name="start" translatable="false">start</string>
 </resources>

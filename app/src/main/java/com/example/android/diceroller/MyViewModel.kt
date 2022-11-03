@@ -1,7 +1,6 @@
 package com.example.android.diceroller
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +18,7 @@ class MyViewModel() : ViewModel() {
     val numbers = mutableListOf<Int>()
     // definimos la ronda actual para observar
     val ronda = MutableLiveData<MutableList<Int>>()
+    // mensaje que queremos mostrar en el boton
     val msjBoton = MutableLiveData<String>()
 
     // inicializamos variables cuando instanciamos
@@ -32,14 +32,13 @@ class MyViewModel() : ViewModel() {
      */
     fun sumarRonda() {
         // añadimos entero random a la ronda
-
         numbers.add(Random.nextInt(0,4))
         ronda.postValue(numbers)
-        Log.d(TAG_LOG, "Array:" + numbers.toString())
+        Log.d(TAG_LOG, "Añadimos Array:" + numbers.toString())
     }
 
     /**
-     * cambiamos mensaje con coroutinas
+     * cambiamos mensaje del boton con coroutinas
      */
     fun salidaLog() {
         CoroutineScope(Dispatchers.Main).launch {
@@ -55,7 +54,7 @@ class MyViewModel() : ViewModel() {
      */
     private fun suspendFun(msg: String) {
         msjBoton.value = msg
-        Log.d(TAG_LOG, msg)
+        Log.d(TAG_LOG, "Nuevo mensaje para el boton " + msg)
     }
 
 }

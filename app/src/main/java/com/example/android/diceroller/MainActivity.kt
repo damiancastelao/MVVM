@@ -19,27 +19,15 @@ package com.example.android.diceroller
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import java.util.Random
-
-// para no usar findViewById
-import kotlinx.android.synthetic.main.activity_main.*
-
 // para observar LiveDatas
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
     // para que sea mas facil la etiqueta del log
-    private val TAG_LOG: String? = "mensaje Main"
-
-    // contenedor de imagen
-    lateinit var diceImage: ImageView
-
-    val duration = Toast.LENGTH_LONG
-
+    private val TAG_LOG: String = "mensaje Main"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,50 +40,28 @@ class MainActivity : AppCompatActivity() {
         val miModelo by viewModels<MyViewModel>()
 
         // observamos cambios en ronda y actualizamos textView
-        miModelo.ronda.observe(
-            this,
-            Observer(fun(nuevaRonda: MutableList<Int>) {
+        miModelo.ronda.observe(this, Observer(fun(nuevaRonda: MutableList<Int>) {
+                // mostramos las rondas
+                var textRonda: TextView = findViewById(R.id.textRonda)
                 textRonda.text = nuevaRonda.toString()
                 // ejemplo de obtener el ultimo elemento
                 if (nuevaRonda.lastIndex > 0)
                     Log.d(TAG_LOG, "Último elemento: " + nuevaRonda.get(nuevaRonda.lastIndex).toString())
-            })
-        )
+            }))
 
         // observamos cambios en msjBoton y actualizamos texto del Button
+        // nuevoMensaje es lo que recibe el observer
         miModelo.msjBoton.observe(this, Observer {
-            nuevoMsg -> comienzo.text = nuevoMsg
+            nuevoMensaje -> findViewById<TextView>(R.id.comienzo).text = nuevoMensaje
         })
-
-        val text = getString(R.string.saludo)
-        val toast = Toast.makeText(applicationContext, text, duration)
 
         val botonTirar: Button = findViewById(R.id.roll_button)
         botonTirar.setOnClickListener {
-            // cambia la imagen
-            rollDice()
             // llama a las corutinas
             miModelo.salidaLog()
             // añado una ronda en el ViewModel
             miModelo.sumarRonda()
-            Log.d("mensajeCorutina", "Actualizo ronda")
+            Log.d(TAG_LOG, "Actualizo ronda")
         }
-
-        diceImage = findViewById(R.id.dice_image)
     }
-
-    private fun rollDice() {
-        val randomInt = Random().nextInt(6) + 1
-        val drawableResource = when (randomInt) {
-            1 -> R.drawable.dice_1
-            2 -> R.drawable.dice_2
-            3 -> R.drawable.dice_3
-            4 -> R.drawable.dice_4
-            5 -> R.drawable.dice_5
-            else -> R.drawable.dice_6
-        }
-
-        diceImage.setImageResource(drawableResource)
-    }
-
 }
