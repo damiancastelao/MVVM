@@ -16,8 +16,8 @@ class MyViewModel() : ViewModel() {
     // este va a ser nuestra lista para la secuencia random
     // usamos mutable, ya que la queremos modificar
     val numbers = mutableListOf<Int>()
-    // definimos MutableLiveData para poder observar valores observar
-    // como queremos observar una MutableList
+    // definimos una MutableLiveData
+    // para poder observar los valores de la MutableList<Int>
     val livedata_numbers = MutableLiveData<MutableList<Int>>()
 
     // inicializamos variables cuando instanciamos

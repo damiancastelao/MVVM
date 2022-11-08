@@ -39,20 +39,6 @@ class MainActivity : AppCompatActivity() {
         // se configure en project structure -> Modules -> Target Compatibillity
         val miModelo by viewModels<MyViewModel>()
 
-        // observamos cambios en livedata
-        // actualizamos textView en caso de recibir datos
-        miModelo.livedata_numbers.observe(
-            this, 
-            Observer(
-                // funcion que llamaremos cada vez que cambie el valor del observable
-                fun(nuevaListaRandom: MutableList<Int>) {
-                    // mostramos los randoms
-                    var textRandom: TextView = findViewById(R.id.textRandom)
-                    textRandom.text = nuevaListaRandom.toString()
-                }
-            )
-        )
-
         // definimos el listener del boton
         // llama a una función del ViewModel
         // que es el encargado de manipular los datos
@@ -62,5 +48,20 @@ class MainActivity : AppCompatActivity() {
             miModelo.sumarRandom()
             Log.d(TAG_LOG, "Actualizo ronda")
         }
+
+        // observamos cambios en livedata
+        miModelo.livedata_numbers.observe(
+            this, 
+            Observer(
+                // funcion que llamaremos cada vez que cambie el valor del observable
+                fun(nuevaListaRandom: MutableList<Int>) {
+                    // actualizamos textView en caso de recibir datos
+                    var textRandom: TextView = findViewById(R.id.textRandom)
+                    textRandom.text = nuevaListaRandom.toString()
+                }
+            )
+        )
+
+
     }
 }
