@@ -1,4 +1,4 @@
-package com.example.android.diceroller
+package com.example.android.mvvm
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

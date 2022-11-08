@@ -1,104 +1,122 @@
-# Make your First App - Dice Roller 
+# MVVM arquitectura Android
 
-This is the toy app for lesson 1 of the [Android App Development in Kotlin course on Udacity](https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012).
+---
 
-## Dice Roller
+## Introducción
 
-Dice Roller is a simple app that rolls a six sided die.
+El objetivo de esta app es describir las diferentes clases y como se interrelacionan para el [modelo MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel?hl=es-419)
 
+Una buena guía es [esta](https://developer.android.com/codelabs/kotlin-android-training-live-data#0).
 
-## Screenshots
+## Escenario
+Tenemos nuestra aplicación diseñada y codificada y queremos transformarla a la arquitectura MVVC, separar el manejo de datos de la activity principal.
 
-![Screenshot1](screenshots/screen0.png) ![Screenshot1](screenshots/screen1.png)
+Además utilizar el patrón de diseño [Observer](https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o))
 
-## How to use this repo while taking the course
+## Esquema general
 
+![](./images/mvvm.png)
 
-Each code repository in this class has a chain of commits that looks like this:
+## Configuración Gradle
 
-![listofcommits](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58befe2e_listofcommits/listofcommits.png)
+Añadimos las siguientes dependencias
 
-These commits show every step you'll take to create the app. Each commit contains instructions for completing the that step.
-
-Each commit also has a **branch** associated with it of the same name as the commit message, seen below:
-
-![branches](https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590390fe_branches-ud855/branches-ud855.png
-)
-Access all branches from this tab
-
-![listofbranches](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58befe76_listofbranches/listofbranches.png
-)
-
-
-![branchesdropdown](https://d17h27t6h515a5.cloudfront.net/topher/2017/April/590391a3_branches-dropdown-ud855/branches-dropdown-ud855.png
-)
-
-The branches are also accessible from the drop-down in the "Code" tab
-
-
-## Working with the Course Code
-
-Here are the basic steps for working with and completing exercises in the repo.
-
-The basic steps are:
-
-1. Clone the repo
-2. Checkout the branch corresponding to the step you want to attempt
-3. Find and complete the TODOs
-4. Optionally commit your code changes
-5. Compare your code with the solution
-6. Repeat steps 2-5 until you've gone trough all the steps to complete the toy app
-
-
-**Step 1: Clone the repo**
-
-As you go through the course, you'll be instructed to clone the different exercise repositories, so you don't need to set these up now. You can clone a repository from github in a folder of your choice with the command:
-
-```bash
-git clone https://github.com/udacity/REPOSITORY_NAME.git
+```
+dependencies {
+(...)
+  // para instanciar ViewModel en la Activity
+  implementation "androidx.fragment:fragment-ktx:1.5.4"
+  // para los observables
+  implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+}
 ```
 
-**Step 2: Checkout the step branch**
+Necesitamos que la compilación sea compatible con Java 1.8, si no, nos puede dar este [error](https://stackoverflow.com/questions/48988778/cannot-inline-bytecode-built-with-jvm-target-1-8-into-bytecode-that-is-being-bui).
 
-As you go through different steps in the code, you'll be told which step you're on, as well as a link to the corresponding branch.
+Recuerda que Kotlin compila Java. Para esto lo tenemos que configurar en el mismo fichero build.gradle en la sección, añadimos:
 
-You'll want to check out the branch associated with that step. The command to check out a branch would be:
-
-```bash
-git checkout BRANCH_NAME
+```
+android {
+    (...)
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 ```
 
-**Step 3: Find and complete the TODOs**
+---
 
-Once you've checked out the branch, you'll have the code in the exact state you need. You'll even have TODOs, which are special comments that tell you all the steps you need to complete the exercise. You can easily navigate to all the TODOs using Android Studio's TODO tool. To open the TODO tool, click the button at the bottom of the screen that says TODO. This will display a list of all comments with TODO in the project. 
+## Código
+La clase ```MyViewModel``` va a ser la responsable de manejar los **datos** de nuestra aplicación.
 
-We've numbered the TODO steps so you can do them in order:
-![todos](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58bf00e7_todos/todos.png
-)
+Necesariamente no pondremos nada en esta clase referida a nuestra UI (interfaz de usuario), esto lo seguiremos haciendo en nuestra activity principal.
 
-**Step 4: Commit your code changes**
+Como se ve en el código vamos a usar una [lista mutable](https://developer.android.com/codelabs/basic-android-kotlin-training-lists?hl=es-419#2): ```numbers```, para guardar varios enteros.
 
-After You've completed the TODOs, you can optionally commit your changes. This will allow you to see the code you wrote whenever you return to the branch. The following git code will add and save **all** your changes.
+Todo los cambios de esta lista lo haremos en esta clase ```MyViewModel```.
 
-```bash
-git add .
-git commit -m "Your commit message"
+```
+// definimos la lista mutable
+val numbers = MutableLiveData<Int>()
 ```
 
-**Step 5: Compare with the solution**
+La clase de ```numbers``` es ```mutableList```, es una lista de enteros que podemos modificar
 
-Some exercises will have a list of steps for you to check off in the classroom. Once you've checked these off, you'll see a pop up window with a link to the solution code. Note the **Diff** link:
+Para poder observar ```numbers``` definimos otra variable: ```livedata_numbers```
 
-![solutionwindow](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58bf00f9_solutionwindow/solutionwindow.png
-)
+Esta variable será la que 'contenga' y dispare los cambios de ```numbers```
 
-The **Diff** link will take you to a Github diff as seen below:
-![diff](https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58bf0108_diffsceenshot/diffsceenshot.png
-)
+Implementa un par de métodos y extiende de ```MutableLiveData``` (que es una clase abstracta y no la podemos usar directamente).
 
-All of the code that was added in the solution is in green, and the removed code (which will usually be the TODO comments) is in red. 
+Esta clase me permite hacer un **observable**.
 
-You can also compare your code locally with the branch of the following step.
+---
 
-## Report Issues
-Notice any issues with a repository? Please file a [github issue](https://github.com/udacity/andfun-kotlin-dice-roller/issues) in this repository.
+Haremos la actualización del dato cada vez que le demos click al botón.
+
+Esto lo haremos en la clase pricipal, en el listener del botón.
+
+
+Primero vamos a instanciar este ```ViewModel``` en la activity principal:
+
+```
+val miModelo by viewModels<MyViewModel>()
+```
+
+La instancia se llama **miModelo**. El uso de *by* en Kotlin es lo que se llama delegación de propiedades.
+
+En el listener del botón (o sea, cuando el usuario haga *click*) llamaremos a la función que modifica la lista:
+
+```
+miModelo.sumarRandom()
+```
+
+Entonces, el ViewModel añadirá un random a la lista y actualizará el valor del livedata:
+
+```
+// añadimos entero random a la lista
+numbers.add(Random.nextInt(0,4))
+// actualizamos el livedata, de esta manera si hay un observador
+// este recibirá la nueva lista
+livedata_numbers.setValue(numbers)
+```
+
+Cuando hacemos el ```setValue```, el observer (en la MainActivity) recibe el valor (en nuestro caso una ```MutableList```)
+
+```
+Observer(
+  // funcion que llamaremos cada vez que cambie el valor del observable
+  fun(nuevaListaRandom: MutableList<Int>)
+```
+
+Ya puedo actualizar el texto del ```TextView``` (```textRandom```) con la lista recibida (```nuevaListaRandom```)
+
+```
+textRandom.text = nuevaListaRandom.toString()
+```
+
+Ciclo terminado
+
+---

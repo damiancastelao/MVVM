@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.diceroller
+package com.example.android.mvvm
 
 import android.os.Bundle
 import android.util.Log
@@ -39,28 +39,27 @@ class MainActivity : AppCompatActivity() {
         // se configure en project structure -> Modules -> Target Compatibillity
         val miModelo by viewModels<MyViewModel>()
 
-        // observamos cambios en ronda y actualizamos textView
-        miModelo.ronda.observe(this, Observer(fun(nuevaRonda: MutableList<Int>) {
-                // mostramos las rondas
-                var textRonda: TextView = findViewById(R.id.textRonda)
-                textRonda.text = nuevaRonda.toString()
-                // ejemplo de obtener el ultimo elemento
-                if (nuevaRonda.lastIndex > 0)
-                    Log.d(TAG_LOG, "Último elemento: " + nuevaRonda.get(nuevaRonda.lastIndex).toString())
-            }))
+        // observamos cambios en livedata
+        // actualizamos textView en caso de recibir datos
+        miModelo.livedata_numbers.observe(
+            this, 
+            Observer(
+                // funcion que llamaremos cada vez que cambie el valor del observable
+                fun(nuevaListaRandom: MutableList<Int>) {
+                    // mostramos los randoms
+                    var textRandom: TextView = findViewById(R.id.textRandom)
+                    textRandom.text = nuevaListaRandom.toString()
+                }
+            )
+        )
 
-        // observamos cambios en msjBoton y actualizamos texto del Button
-        // nuevoMensaje es lo que recibe el observer
-        miModelo.msjBoton.observe(this, Observer {
-            nuevoMensaje -> findViewById<TextView>(R.id.comienzo).text = nuevoMensaje
-        })
-
-        val botonTirar: Button = findViewById(R.id.roll_button)
-        botonTirar.setOnClickListener {
-            // llama a las corutinas
-            miModelo.salidaLog()
-            // añado una ronda en el ViewModel
-            miModelo.sumarRonda()
+        // definimos el listener del boton
+        // llama a una función del ViewModel
+        // que es el encargado de manipular los datos
+        val botonNuevoRandom: Button = findViewById(R.id.roll_button)
+        botonNuevoRandom.setOnClickListener {
+            // llama a la función del ViewModel
+            miModelo.sumarRandom()
             Log.d(TAG_LOG, "Actualizo ronda")
         }
     }
