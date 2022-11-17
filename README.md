@@ -59,7 +59,7 @@ Todo los cambios de esta lista lo haremos en esta clase ```MyViewModel```.
 
 ```
 // definimos la lista mutable
-val numbers = MutableLiveData<Int>()
+val numbers = mutableListOf<Int>()
 ```
 
 La clase de ```numbers``` es ```mutableList```, es una lista de enteros que podemos modificar
