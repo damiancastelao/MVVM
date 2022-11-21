@@ -1,4 +1,4 @@
-# MVVM arquitectura Android
+# MVVM arquitectura Android (solo ViewModel)
 
 ---
 
@@ -120,3 +120,5 @@ textRandom.text = nuevaListaRandom.toString()
 Ciclo terminado
 
 ---
+
+> Para seguir avanzando, cámbiate de rama
