@@ -6,12 +6,18 @@
 
 El objetivo de esta app es describir las diferentes clases y como se interrelacionan para el [modelo MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel?hl=es-419)
 
-Una buena guía es [esta](https://developer.android.com/codelabs/kotlin-android-training-live-data#0).
+Una buena guía es [esta](https://developer.android.com/codelabs/basic-android-kotlin-training-livedata?hl=es-419#0).
 
 ## Escenario
 Tenemos nuestra aplicación diseñada y codificada y queremos transformarla a la arquitectura MVVC, separar el manejo de datos de la activity principal.
 
 Además utilizar el patrón de diseño [Observer](https://es.wikipedia.org/wiki/Observer_(patr%C3%B3n_de_dise%C3%B1o))
+
+En este caso, el único dato que vamos a manejar son enteros aleatorios. 
+
+En principio este numero estará en la UI (interfaz de usuario) y lo cambiaremos cada vez que el usuario haga click en un botón.
+
+Queremos que este numero se guarde en una variable en el ViewModel y no en la activity principal, ni en la UI.
 
 ## Esquema general
 
@@ -24,8 +30,6 @@ Añadimos las siguientes dependencias
 ```
 dependencies {
 (...)
-  // para instanciar ViewModel en la Activity
-  implementation "androidx.fragment:fragment-ktx:1.5.4"
   // para los observables
   implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
 }
@@ -97,7 +101,7 @@ Entonces, el ViewModel añadirá un random a la lista y actualizará el valor de
 
 ```
 // añadimos entero random a la lista
-numbers.add(Random.nextInt(0,4))
+numbers.add(Random.nextInt(0,10))
 // actualizamos el livedata, de esta manera si hay un observador
 // este recibirá la nueva lista
 livedata_numbers.setValue(numbers)
