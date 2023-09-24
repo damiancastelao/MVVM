@@ -21,9 +21,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 
-// para observar LiveDatas
-import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+// para observar lod caambios del ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 // compose para la UI
 import androidx.compose.foundation.layout.padding
@@ -32,8 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,49 +49,65 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    Log.d(TAG_LOG,"llamamos a la IU")
                     InterfazUsuario()
                 }
-
             }
-
-            // TODO ViewModel
-            // nomenclatura que necesita utilizar jvm 1.8
-            // se configure en project structure -> Modules -> Target Compatibillity
-            val miModelo by viewModels<MyViewModel>()
-
-            // observamos cambios en livedata
-            /*miModelo.livedata_numbers.observe(
-                this,
-                Observer(
-                    // funcion que llamaremos cada vez que cambie el valor del observable
-                    fun(nuevaListaRandom: MutableList<Int>) {
-                        // actualizamos textView en caso de recibir datos
-                        Log.d(TAG_LOG, "Recibimos nueva lista: " + nuevaListaRandom.toString())
-                    }
-                )
-            )*/
         }
     }
 }
-@Composable
-private fun InterfazUsuario() {
-    // datos de la aplicacion, queremos observar cuando cambia
-    var _numbers = remember { mutableStateOf(0) }
 
-    // un cuadro de texto para mostrar los numeros
-    Text(
-        text = "Numeros: ${_numbers.value}",
-        modifier = Modifier.padding(32.dp)
-    )
+/**
+ * Interfaz de usuario
+ * Recibe el ViewModel para poder observar los valores
+ * Utiliza funciones del ViewModel en los eventos
+ *
+ * @param viewModel objeto encargado de los datos de la app
+ */
+@Composable
+private fun InterfazUsuario(viewModel: MyViewModel = viewModel()) {
+    // datos de la aplicacion, queremos observar cuando cambia
+    val _number = viewModel.livedata_datos.observeAsState()
+    // llamamos a otro widget
+    // es preferible organizar la interfaz con diferentes widget
+    ShowData(number = _number.value)
+    // llamamos a otra funcion @Composable
+    // otro widget
+    Prueba()
     // un boton para generar numeros aleatorios
     Button(
-        onClick = { _numbers.value = (0..10).random() },
+        onClick = { viewModel.sumarRandom() },
         modifier = Modifier.padding(64.dp))
         {
             Text(text = "Generar numeros")
         }
 }
 
+/**
+ * Widget que cambia cuando cambia 'numero'
+ *
+ * @param number entero que queremos mostrar
+ */
+@Composable
+private fun ShowData(number: Int?) {
+    // un cuadro de texto para mostrar los numeros
+    Text(
+        text = "Numeros: ${number}",
+        modifier = Modifier.padding(32.dp)
+    )
+}
+
+/**
+ * Funcion de prueba
+ * Comprobamos que usa el mismo objeto ViewModel
+ */
+@Composable
+private fun Prueba(viewModel: MyViewModel = viewModel()) {
+    // datos de la aplicacion, queremos observar cuando cambia
+    val _number = viewModel.livedata_datos.observeAsState()
+    Log.d("mensaje Prueba", "¿Mismo ViewModel?= ${_number.value}, ¡si!")
+
+}
 @Preview
 @Composable
 fun DefaultPreview() {
