@@ -21,10 +21,14 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 
+
 // para observar LiveDatas
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.lifecycle.Observer
+// para observar lod caambios del ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 // compose para la UI
 import androidx.compose.foundation.layout.padding
@@ -33,8 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -54,15 +57,23 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    Log.d(TAG_LOG,"llamamos a la IU")
                     InterfazUsuario()
                 }
-
             }
         }
     }
 }
+
+/**
+ * Interfaz de usuario
+ * Recibe el ViewModel para poder observar los valores
+ * Utiliza funciones del ViewModel en los eventos
+ *
+ * @param viewModel objeto encargado de los datos de la app
+ */
 @Composable
-private fun InterfazUsuario() {
+private fun InterfazUsuario(viewModel: MyViewModel = viewModel()) {
     // datos de la aplicacion, queremos observar cuando cambia
     var _numbers = remember { mutableStateOf(0) }
 
@@ -89,6 +100,31 @@ private fun InterfazUsuario() {
         }
 }
 
+/**
+ * Widget que cambia cuando cambia 'numero'
+ *
+ * @param number entero que queremos mostrar
+ */
+@Composable
+private fun ShowData(number: Int?) {
+    // un cuadro de texto para mostrar los numeros
+    Text(
+        text = "Numeros: ${number}",
+        modifier = Modifier.padding(32.dp)
+    )
+}
+
+/**
+ * Funcion de prueba
+ * Comprobamos que usa el mismo objeto ViewModel
+ */
+@Composable
+private fun Prueba(viewModel: MyViewModel = viewModel()) {
+    // datos de la aplicacion, queremos observar cuando cambia
+    val _number = viewModel.livedata_datos.observeAsState()
+    Log.d("mensaje Prueba", "¿Mismo ViewModel?= ${_number.value}, ¡si!")
+
+}
 @Preview
 @Composable
 fun DefaultPreview() {
