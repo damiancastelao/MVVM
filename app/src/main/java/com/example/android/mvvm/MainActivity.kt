@@ -23,6 +23,7 @@ import androidx.activity.compose.setContent
 
 // para observar LiveDatas
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
 import androidx.lifecycle.Observer
 
 // compose para la UI
@@ -35,13 +36,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-class MainActivity : ComponentActivity() {
-    // para que sea mas facil la etiqueta del log
-    private val TAG_LOG: String = "mensaje Main"
+// para que sea mas facil la etiqueta del log
+private val TAG_LOG: String = "mensaje Main"
 
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // creamos la interface de usuario con Compose
@@ -55,23 +58,6 @@ class MainActivity : ComponentActivity() {
                 }
 
             }
-
-            // TODO ViewModel
-            // nomenclatura que necesita utilizar jvm 1.8
-            // se configure en project structure -> Modules -> Target Compatibillity
-            val miModelo by viewModels<MyViewModel>()
-
-            // observamos cambios en livedata
-            /*miModelo.livedata_numbers.observe(
-                this,
-                Observer(
-                    // funcion que llamaremos cada vez que cambie el valor del observable
-                    fun(nuevaListaRandom: MutableList<Int>) {
-                        // actualizamos textView en caso de recibir datos
-                        Log.d(TAG_LOG, "Recibimos nueva lista: " + nuevaListaRandom.toString())
-                    }
-                )
-            )*/
         }
     }
 }
@@ -83,13 +69,22 @@ private fun InterfazUsuario() {
     // un cuadro de texto para mostrar los numeros
     Text(
         text = "Numeros: ${_numbers.value}",
-        modifier = Modifier.padding(32.dp)
+        modifier = Modifier.padding(32.dp),
+        color = Color.DarkGray
     )
     // un boton para generar numeros aleatorios
     Button(
-        onClick = { _numbers.value = (0..10).random() },
+        onClick = {
+            _numbers.value = (0..10).random()
+            Log.d(TAG_LOG, "Dentro del onClick")
+        },
         modifier = Modifier.padding(64.dp))
         {
+            Image(
+                painter = painterResource(id = R.drawable.baseline_face_24),
+                contentDescription = "Generar numeros",
+                Modifier.padding(8.dp)
+            )
             Text(text = "Generar numeros")
         }
 }
