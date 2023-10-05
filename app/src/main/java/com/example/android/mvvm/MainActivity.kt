@@ -42,7 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 // para que sea mas facil la etiqueta del log
-private val TAG_LOG: String = "mensaje Main"
+val TAG_LOG: String = "mensaje Main"
 
 // datos de la aplicacion, queremos observar cuando cambia
 var _numbers = mutableStateOf(0)
@@ -63,37 +63,5 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-    }
-}
-@Composable
-private fun InterfazUsuario() {
-    // un cuadro de texto para mostrar los numeros
-    Text(
-        text = "Numeros: ${_numbers.value}",
-        modifier = Modifier.padding(32.dp),
-        color = Color.DarkGray
-    )
-    // un boton para generar numeros aleatorios
-    Button(
-        onClick = {
-            _numbers.value = (0..10).random()
-            Log.d(TAG_LOG, "Dentro del onClick")
-        },
-        modifier = Modifier.padding(64.dp))
-        {
-            Image(
-                painter = painterResource(id = R.drawable.baseline_face_24),
-                contentDescription = "Generar numeros",
-                Modifier.padding(8.dp)
-            )
-            Text(text = "Generar numeros")
-        }
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    MaterialTheme {
-        InterfazUsuario()
     }
 }
