@@ -44,9 +44,6 @@ import androidx.compose.ui.unit.dp
 // para que sea mas facil la etiqueta del log
 val TAG_LOG: String = "mensaje Main"
 
-// datos de la aplicacion, queremos observar cuando cambia
-var _numbers = mutableStateOf(0)
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

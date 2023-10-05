@@ -1,9 +1,8 @@
 package com.example.android.mvvm
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import kotlin.random.Random
 
 /**
  * Inicializa y modifica los datos de la app
@@ -15,27 +14,23 @@ class MyViewModel() : ViewModel() {
 
     // este va a ser nuestra lista para la secuencia random
     // usamos mutable, ya que la queremos modificar
-    val numbers = mutableListOf<Int>()
-    // definimos una MutableLiveData
-    // para poder observar los valores de la MutableList<Int>
-    val livedata_numbers = MutableLiveData<MutableList<Int>>()
+    var _numbers = mutableStateOf(0)
+
 
     // inicializamos variables cuando instanciamos
     init {
-        Log.d(TAG_LOG, "Inicializamos livedata")
-        livedata_numbers.value = numbers
+        Log.d(TAG_LOG, "Inicializamos ViewModel")
     }
 
     /**
-     * añadimos entero random al
+     * crear entero random
      */
-    fun sumarRandom() {
-        // añadimos entero random a la lista
-        numbers.add(Random.nextInt(0,4))
-        // actualizamos el livedata, de esta manera si hay un observador
-        // este recibirá la nueva lista
-        livedata_numbers.setValue(numbers)
-        // la mostramos en el logcat
-        Log.d(TAG_LOG, "Añadimos Array al livedata:" + numbers.toString())
+    fun crearRandom() {
+        _numbers.value = (0..10).random()
+        Log.d(TAG_LOG, "creamos random ${_numbers.value}")
+    }
+
+    fun getNumero(): Int {
+        return _numbers.value
     }
 }

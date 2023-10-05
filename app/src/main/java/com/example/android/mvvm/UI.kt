@@ -14,17 +14,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InterfazUsuario() {
+fun InterfazUsuario(miViewModel: MyViewModel = MyViewModel()) {
+
     // un cuadro de texto para mostrar los numeros
     Text(
-        text = "Numeros: ${_numbers.value}",
+        text = "Numeros: ${miViewModel.getNumero()}",
         modifier = Modifier.padding(32.dp),
         color = Color.DarkGray
     )
     // un boton para generar numeros aleatorios
     Button(
         onClick = {
-            _numbers.value = (0..10).random()
+            miViewModel.crearRandom()
             Log.d(TAG_LOG, "Dentro del onClick")
         },
         modifier = Modifier.padding(64.dp))
