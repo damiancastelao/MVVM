@@ -17,36 +17,24 @@
 package com.example.android.mvvm
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 
 // para observar LiveDatas
-import androidx.activity.viewModels
-import androidx.compose.foundation.Image
-import androidx.lifecycle.Observer
 
 // compose para la UI
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
-// para que sea mas facil la etiqueta del log
-val TAG_LOG: String = "mensaje Main"
 
 class MainActivity : ComponentActivity() {
+    // para que sea mas facil la etiqueta del log
+    private val TAG_LOG: String = "mensaje Main"
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        // inicializamos ViewModel
+        val miViewModel: MyViewModel = MyViewModel()
         // creamos la interface de usuario con Compose
         setContent { // In here, we can call composables!
             MaterialTheme {
@@ -54,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    InterfazUsuario()
+                    InterfazUsuario(miViewModel)
                 }
 
             }

@@ -14,7 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InterfazUsuario(miViewModel: MyViewModel = MyViewModel()) {
+fun InterfazUsuario(miViewModel: MyViewModel) {
+
+    // para que sea mas facil la etiqueta del log
+    val TAG_LOG: String = "mensaje UI"
 
     // un cuadro de texto para mostrar los numeros
     Text(
@@ -25,8 +28,8 @@ fun InterfazUsuario(miViewModel: MyViewModel = MyViewModel()) {
     // un boton para generar numeros aleatorios
     Button(
         onClick = {
-            miViewModel.crearRandom()
             Log.d(TAG_LOG, "Dentro del onClick")
+            miViewModel.crearRandom()
         },
         modifier = Modifier.padding(64.dp))
     {
@@ -43,6 +46,6 @@ fun InterfazUsuario(miViewModel: MyViewModel = MyViewModel()) {
 @Composable
 fun DefaultPreview() {
     MaterialTheme {
-        InterfazUsuario()
+        InterfazUsuario(miViewModel = MyViewModel())
     }
 }

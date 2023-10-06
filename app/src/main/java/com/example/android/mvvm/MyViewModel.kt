@@ -30,6 +30,9 @@ class MyViewModel() : ViewModel() {
         Log.d(TAG_LOG, "creamos random ${_numbers.value}")
     }
 
+    /**
+     * Devuelve el numero
+     */
     fun getNumero(): Int {
         return _numbers.value
     }
